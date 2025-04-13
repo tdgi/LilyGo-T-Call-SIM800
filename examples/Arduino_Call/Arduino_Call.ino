@@ -1,9 +1,9 @@
 // Please select the corresponding model
 
-// #define SIM800L_IP5306_VERSION_20190610
+#define SIM800L_IP5306_VERSION_20190610
 // #define SIM800L_AXP192_VERSION_20200327
 // #define SIM800C_AXP192_VERSION_20200609
-#define SIM800L_IP5306_VERSION_20200811
+// #define SIM800L_IP5306_VERSION_20200811
 
 // Define the serial console for debug prints, if needed
 #define DUMP_AT_COMMANDS
@@ -31,8 +31,8 @@ TinyGsm modem(SerialAT);
 #endif
 
 // Set phone numbers, if you want to test SMS and Calls
-#define SMS_TARGET  "+380xxxxxxxxx"
-#define CALL_TARGET "+380xxxxxxxxx"
+#define SMS_TARGET  "+420607126114"
+#define CALL_TARGET "+420607126114"
 
 
 void setup()

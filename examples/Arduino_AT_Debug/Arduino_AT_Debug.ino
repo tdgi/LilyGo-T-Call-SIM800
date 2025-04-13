@@ -3,10 +3,10 @@
 
 // Please select the corresponding model
 
-// #define SIM800L_IP5306_VERSION_20190610
+#define SIM800L_IP5306_VERSION_20190610
 // #define SIM800L_AXP192_VERSION_20200327
 // #define SIM800C_AXP192_VERSION_20200609
- #define SIM800L_IP5306_VERSION_20200811
+// #define SIM800L_IP5306_VERSION_20200811
 
 #include <Arduino.h>
 #include "utilities.h"
@@ -70,26 +70,41 @@ void setup()
     // Set console baud rate
     SerialMon.begin(115200);
 
+    delay(10);
+
+    // Start power management
+    if (setupPMU() == false) {
+        Serial.println("Setting power error");
+    }
+
     setupModem();
 
+    // Set GSM module baud rate and UART pins
+    SerialAT.begin(115200, SERIAL_8N1, MODEM_RX, MODEM_TX);
+
     if (AutoBaud()) {
-        Serial.println(F("***********************************************************"));
-        Serial.println(F(" You can now send AT commands"));
-        Serial.println(F(" Enter \"AT\" (without quotes), and you should see \"OK\""));
-        Serial.println(F(" If it doesn't work, select \"Both NL & CR\" in Serial Monitor"));
-        Serial.println(F(" DISCLAIMER: Entering AT commands without knowing what they do"));
-        Serial.println(F(" can have undesired consiquinces..."));
-        Serial.println(F("***********************************************************\n"));
+        SerialMon.println(F("***********************************************************"));
+        SerialMon.println(F(" You can now send AT commands"));
+        SerialMon.println(F(" Enter \"AT\" (without quotes), and you should see \"OK\""));
+        SerialMon.println(F(" If it doesn't work, select \"Both NL & CR\" in Serial Monitor"));
+        SerialMon.println(F(" DISCLAIMER: Entering AT commands without knowing what they do"));
+        SerialMon.println(F(" can have undesired consiquinces..."));
+        SerialMon.println(F("***********************************************************\n"));
     } else {
-        Serial.println(F("***********************************************************"));
-        Serial.println(F(" Failed to connect to the modem! Check the baud and try again."));
-        Serial.println(F("***********************************************************\n"));
+        SerialMon.println(F("***********************************************************"));
+        SerialMon.println(F(" Failed to connect to the modem! Check the baud and try again."));
+        SerialMon.println(F("***********************************************************\n"));
     }
 
 }
 
 void loop()
 {
+    // check tel number
+    // delay(5000);
+    // SerialAT.write("AT+CSQ\r\n");
+    // delay(10);
+
     while (SerialAT.available()) {
         SerialMon.write(SerialAT.read());
     }
